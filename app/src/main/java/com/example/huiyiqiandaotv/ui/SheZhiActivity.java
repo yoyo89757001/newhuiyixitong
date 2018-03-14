@@ -312,7 +312,7 @@ public class SheZhiActivity extends Activity implements View.OnClickListener, Vi
 
                         final XiuGaiXinXiDialog dialog=new XiuGaiXinXiDialog(SheZhiActivity.this);
                         if (baoCunBean.getTouxiangzhuji()==null){
-                            dialog.setContents("设置头像主机地址)","http://121.46.3.20");
+                            dialog.setContents("设置头像主机地址","http://121.46.3.20");
                         }else {
                             dialog.setContents("设置头像主机地址",baoCunBean.getTouxiangzhuji());
                         }
@@ -487,7 +487,7 @@ public class SheZhiActivity extends Activity implements View.OnClickListener, Vi
                         //弹窗
                         final XiuGaiXinXiDialog dialog=new XiuGaiXinXiDialog(SheZhiActivity.this);
                         if (baoCunBean.getHoutaiDiZhi()==null){
-                            dialog.setContents("设置后台地址)","http://192.168.1.1");
+                            dialog.setContents("设置后台地址","http://192.168.1.1");
                         }else {
                             dialog.setContents("设置后台地址",baoCunBean.getHoutaiDiZhi());
                         }
@@ -534,7 +534,7 @@ public class SheZhiActivity extends Activity implements View.OnClickListener, Vi
                         //弹窗
                         final XiuGaiXinXiDialog dialog=new XiuGaiXinXiDialog(SheZhiActivity.this);
                         if (baoCunBean.getZhanghuId()==null){
-                            dialog.setContents("设置账户id)","");
+                            dialog.setContents("设置账户id","");
                         }else {
                             dialog.setContents("设置账户id",baoCunBean.getZhanghuId());
                         }
@@ -579,7 +579,7 @@ public class SheZhiActivity extends Activity implements View.OnClickListener, Vi
                         //弹窗
                         final XiuGaiXinXiDialog dialog=new XiuGaiXinXiDialog(SheZhiActivity.this);
                         if (baoCunBean.getHuiyiId()==null){
-                            dialog.setContents("设置会议id)","");
+                            dialog.setContents("设置会议id","");
                         }else {
                             dialog.setContents("设置会议id",baoCunBean.getHuiyiId());
                         }

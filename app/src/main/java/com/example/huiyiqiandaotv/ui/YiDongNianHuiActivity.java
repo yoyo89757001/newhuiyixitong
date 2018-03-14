@@ -86,6 +86,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,7 +141,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 	private Typeface typeFace1;
 	private RelativeLayout tops_rl;
 	private TextView y1,y2,y3,y4,n1,n2,n3,n4;
-
+	private String zhanghuID=null,huiyiID=null;
 	protected Handler mainHandler;
 	private String appId = "10588094";
 	private String appKey = "dfudSSFfNNhDCDoK7UG9G5jn";
@@ -347,7 +348,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 					cc.append(String.valueOf(c)).append(" ");
 				}
 				y1.setText(cc.toString());
-
+				Log.d(TAG, cc.toString());
 				y2.setText(benDiRenShuBean.getYShen()+"");
 				y3.setText(benDiRenShuBean.getYShi()+"");
 				y4.setText(benDiRenShuBean.getYTeyao()+"");
@@ -360,7 +361,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 					cc2.append(String.valueOf(c)).append(" ");
 				}
 				n1.setText(cc2.toString());
-
+				Log.d(TAG, cc2.toString());
 				n2.setText(benDiRenShuBean.getNShen()+"");
 				n3.setText(benDiRenShuBean.getNShi()+"");
 				n4.setText(benDiRenShuBean.getNTeyao()+"");
@@ -542,10 +543,10 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 		ii.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (baoCunBean.getZhanghuId()!=null && !baoCunBean.getZhanghuId().equals("") ){
+				if (baoCunBean.getHoutaiDiZhi()!=null && !baoCunBean.getHoutaiDiZhi().equals("") && baoCunBean.getZhanghuId()!=null && !baoCunBean.getZhanghuId().equals("") && baoCunBean.getHuiyiId()!=null && !baoCunBean.getHuiyiId().equals("") ){
 					link_login();
 				}else {
-					TastyToast.makeText(YiDongNianHuiActivity.this,"请先设置会议账户id",TastyToast.LENGTH_SHORT,TastyToast.INFO).show();
+					TastyToast.makeText(YiDongNianHuiActivity.this,"请先设置账户和会议id",TastyToast.LENGTH_SHORT,TastyToast.INFO).show();
 				}
 
 			}
@@ -677,6 +678,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 			/*
              * @param msg
              */
+
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
@@ -687,7 +689,6 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 
 		//Utils.initPermission(YiDongNianHuiActivity.this);
 		initialTts();
-
 
 //		RelativeLayout.LayoutParams  params= (RelativeLayout.LayoutParams) recyclerView2.getLayoutParams();
 //		params.width=dw/6;
@@ -714,17 +715,11 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 			}
 		}).start();
 
-		if (baoCunBean.getZhanghuId()!=null && !baoCunBean.getZhanghuId().equals("")){
+		if (baoCunBean.getHoutaiDiZhi()!=null && !baoCunBean.getHoutaiDiZhi().equals("") && baoCunBean.getZhanghuId()!=null && !baoCunBean.getZhanghuId().equals("") && baoCunBean.getHuiyiId()!=null && !baoCunBean.getHuiyiId().equals("")){
 			link_login();
 		}
-		List<QianDaoId> qianDaoIdList=qianDaoIdDao.loadAll();
-		int siz=qianDaoIdList.size();
-		//StringBuilder builder=new StringBuilder();
-		for (int i=0;i<siz;i++){
-		//	builder.append(qianDaoIdList.get(i).getId()).append("签到").append(qianDaoIdList.get(i).getIsQd()).append("   ");
-			if (qianDaoIdList.get(i).getIsQd())
-			link_getAll_User(qianDaoIdList.get(i).getId());
-		}
+		zhanghuID=baoCunBean.getZhanghuId();
+		huiyiID=baoCunBean.getHuiyiId();
 
 
 //		File logFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator +"qiandao.txt");
@@ -1315,26 +1310,18 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 							Log.d(TAG, e.getMessage()+"fghj");
 						}
 
-
-
 					}
-
 				}
 
 				if (intent.getAction().equals("guanbi")){
 					Log.d(TAG, "关闭");
 					finish();
 				}
-
-
 			}
 	//	}
 
 	}
 	}
-
-
-
 
 	// 遍历接收一个文件路径，然后把文件子目录中的所有文件遍历并输出来
 	public static void getAllFiles(File root,String nameaaa){
@@ -1354,19 +1341,24 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 		}
 	}
 
-	private void link_fasong() {
+	private void link_fasong(String discernPhoto,int timestamp,long id,String name,String weizhi) {
 
 		OkHttpClient okHttpClient= MyApplication.getOkHttpClient();
 		RequestBody body = new FormBody.Builder()
-				.add("cmd","getUnSignList")
-                .add("subjectId","")
-                .add("subjectPhoto","")
+				.add("accountId",baoCunBean.getZhanghuId())
+                .add("snapshotPhoto","")
+                .add("discernPhoto",discernPhoto)
+				.add("timestamp2",timestamp+"")
+				.add("subjectId",id+"")
+				.add("subjectName",name)
+				.add("screenPosition",weizhi)
+				.add("conference_id",baoCunBean.getHuiyiId())
 				.build();
 		Request.Builder requestBuilder = new Request.Builder()
-				.header("Content-Type", "application/json")
+				//.header("Content-Type", "application/json")
 				.post(body)
-				.url("http://192.168.2.6:8081/AppSaveHistory");
-
+				.url(baoCunBean.getHoutaiDiZhi()+"/appSave.do");
+		Log.d(TAG, baoCunBean.getHoutaiDiZhi() + "/appSave.do");
 		// step 3：创建 Call 对象
 		Call call = okHttpClient.newCall(requestBuilder.build());
 
@@ -1390,7 +1382,8 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 
 
 				ResponseBody body = response.body();
-				  Log.d("AllConnects", "aa   "+response.body().string());
+				String ss=body.string();
+				  Log.d("AllConnects", "aa   "+ss);
 
 //					JsonObject jsonObject= GsonUtil.parse(body.string()).getAsJsonObject();
 //					Gson gson=new Gson();
@@ -1475,19 +1468,20 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 
 	@Override
 	protected void onStop() {
-		if (webSocketClient!=null){
-			webSocketClient.close();
-			webSocketClient=null;
-		}
-		synthesizer.release();
-		Intent intent1=new Intent("guanbi333"); //关闭监听服务
-		sendBroadcast(intent1);
+
 		super.onStop();
 	}
 
 	@Override
 	protected void onDestroy() {
+		if (webSocketClient!=null){
+			webSocketClient.close();
+			webSocketClient=null;
+		}
 
+		Intent intent1=new Intent("guanbi333"); //关闭监听服务
+		sendBroadcast(intent1);
+		synthesizer.release();
 		handler.removeCallbacksAndMessages(null);
 		if (myReceiver != null)
 			unregisterReceiver(myReceiver);
@@ -1636,7 +1630,13 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 				@Override
 				public void onOpen(ServerHandshake serverHandshake) {
 					isLianJie=true;
-
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							if (!YiDongNianHuiActivity.this.isFinishing())
+								wangluo.setVisibility(View.GONE);
+						}
+					});
 				}
 
 				@Override
@@ -1661,12 +1661,19 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 								message2.arg1 = 1;
 								message2.obj = dataBean.getPerson();
 								handler.sendMessage(message2);
-
-									//QianDaoId qianDaoId = new QianDaoId(dataBean.getPerson().getId(), dataBean.getPerson().getName());
+								for (QianDaoId lists : qianDaoIdDao.loadAll()){
+									Log.d("WebsocketPushMsg", "lists.getId():" + lists.getId());
+								}
+									//QianDaoId qianDaoId = new QianDaoId(dataBean.getPerson().getId(), d	ataBean.getPerson().getName());
 										QianDaoId qianDaoId=qianDaoIdDao.load(dataBean.getPerson().getId());
-										if (qianDaoId!=null){
-											link_getAll_User(dataBean.getPerson().getId());
+										if (baoCunBean.getHoutaiDiZhi()!=null && !baoCunBean.getHoutaiDiZhi().equals("") && zhanghuID!=null && !zhanghuID.equals("") && huiyiID!=null && !huiyiID.equals("")){
+											link_fasong(dataBean.getPerson().getAvatar(),dataBean.getData().getTimestamp()
+													,dataBean.getPerson().getId(),dataBean.getPerson().getName(),dataBean.getScreen().getCamera_position());
 										}
+
+									Log.d("WebsocketPushMsg", "qianDaoId:" + qianDaoId);
+									Log.d("WebsocketPushMsg", "qianDaoId.getid():" + dataBean.getPerson().getId());
+
 									if (qianDaoId!=null && !qianDaoId.getIsQd()) {
 
 										switch (dataBean.getPerson().getDepartment()) {
@@ -1676,6 +1683,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 												benDiRenShuBean.setYShen(benDiRenShuBean.getYShen() + 1);
 												benDiRenShuBean.setY1(benDiRenShuBean.getY1() + 1);
 												benDiRenShuBeanDao.update(benDiRenShuBean);
+												Log.d("WebsocketPushMsg", "ddd4");
 												break;
 											case "市公司领导":
 												benDiRenShuBean.setNShi((benDiRenShuBean.getNShi() - 1) < 0 ? 0 : (benDiRenShuBean.getNShi() - 1));
@@ -1683,6 +1691,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 												benDiRenShuBean.setYShi(benDiRenShuBean.getYShi() + 1);
 												benDiRenShuBean.setY1(benDiRenShuBean.getY1() + 1);
 												benDiRenShuBeanDao.update(benDiRenShuBean);
+												Log.d("WebsocketPushMsg", "ddd3");
 												break;
 											case "特邀嘉宾":
 												benDiRenShuBean.setNTeyao((benDiRenShuBean.getNTeyao() - 1) < 0 ? 0 : (benDiRenShuBean.getNTeyao() - 1));
@@ -1690,9 +1699,10 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 												benDiRenShuBean.setYTeyao(benDiRenShuBean.getYTeyao() + 1);
 												benDiRenShuBean.setY1(benDiRenShuBean.getY1() + 1);
 												benDiRenShuBeanDao.update(benDiRenShuBean);
+												Log.d("WebsocketPushMsg", "ddd2");
 												break;
 											default:
-
+												Log.d("WebsocketPushMsg", "ddd");
 												benDiRenShuBean.setN1((benDiRenShuBean.getN1() - 1) < 0 ? 0 : (benDiRenShuBean.getN1() - 1));
 												benDiRenShuBean.setY1(benDiRenShuBean.getY1() + 1);
 												benDiRenShuBeanDao.update(benDiRenShuBean);
@@ -1771,7 +1781,11 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 					runOnUiThread( new Runnable() {
 						@Override
 						public void run() {
-							TastyToast.makeText(YiDongNianHuiActivity.this,"连接已断开,20秒后重新连接", Toast.LENGTH_LONG,TastyToast.ERROR).show();
+							if (!YiDongNianHuiActivity.this.isFinishing()){
+								wangluo.setVisibility(View.VISIBLE);
+								wangluo.setText("连接识别主机失败,重连中...");
+							}
+
 						}
 					});
 //
@@ -1810,13 +1824,9 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 //
 //			}
 			if (webSocketClient!=null){
-
-			//	webSocketClient.close();
-
-
+				webSocketClient.close();
 				webSocketClient=null;
 				System.gc();
-
 
 			}
 
@@ -1992,7 +2002,6 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 				}
 			}
 
-
 		});
 
 
@@ -2057,9 +2066,6 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 					moShengRenBean2.setAge(age);
 					moShengRenBean2.setBytes(b);
 				//	moShengRenBean2.setUrl("http://192.168.2.7:8080/sign?cmd=signScan&subjectId="+zhaoPianBean.getId());
-
-
-
 				}
 
 				}catch (Exception e){
@@ -2199,7 +2205,6 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 
 		OkHttpClient okHttpClient=MyApplication.getOkHttpClient();
 
-
 	//	RequestBody requestBody = RequestBody.create(JSON, json);
 
 //		Log.d("AllConnects", zhuji);
@@ -2287,10 +2292,10 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 
 	//	RequestBody requestBody = RequestBody.create(JSON, json);
 
-		RequestBody body = new FormBody.Builder()
-				.add("username","rtceshi@163.com")
-				.add("password","123456")
-				.build();
+//		RequestBody body = new FormBody.Builder()
+//				.add("username","rtceshi@163.com")
+//				.add("password","123456")
+//				.build();
 
 		Request.Builder requestBuilder = new Request.Builder()
 				.header("Content-Type", "application/json")
@@ -2298,7 +2303,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 				//.post(requestBody)
 				.get()
 				//.post(body)
-				.url("http://ly.huifnet.com/subjectDeptCount.do?accountId=10000038&id="+baoCunBean.getZhanghuId());
+				.url(baoCunBean.getHoutaiDiZhi()+"/subjectDeptCount.do?accountId="+baoCunBean.getZhanghuId()+"&id="+baoCunBean.getHuiyiId());
 
 		// step 3：创建 Call 对象
 		Call call = okHttpClient.newCall(requestBuilder.build());
