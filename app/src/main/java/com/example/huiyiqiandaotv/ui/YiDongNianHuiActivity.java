@@ -134,7 +134,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 	private boolean isLianJie=false;
 	//private List<AllUserBean.DataBean> dataBeanList=new ArrayList<>();
 	//private RelativeLayout top_rl;
-	private TextView t1,t2,link_bgbg;
+	private TextView t1,t2,link_bgbg,liucheng;
 	private TanChuangBeanDao tanChuangBeanDao=null;
 	private Typeface typeFace1;
 	private RelativeLayout tops_rl;
@@ -509,12 +509,14 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 		setContentView(R.layout.yidongnianhuiactivity);
 		dabg= (ImageView) findViewById(R.id.dabg);
 		link_bgbg= (TextView) findViewById(R.id.bgbg);
+		liucheng= (TextView) findViewById(R.id.liucheng);
 		tops_rl= (RelativeLayout) findViewById(R.id.top_rl);
 		wangluo = (TextView) findViewById(R.id.wangluo);
 		t1= (TextView) findViewById(R.id.t1);
 		t2= (TextView) findViewById(R.id.t2);
 		typeFace1 = Typeface.createFromAsset(getAssets(), "fonts/xk.TTF");
 		t1.setTypeface(typeFace1);
+		liucheng.setTypeface(typeFace1);
 		if (baoCunBean.getWenzi1()!=null){
 			t1.setText(baoCunBean.getWenzi1());
 			if (baoCunBean.getSize1()!=0){
@@ -2466,6 +2468,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 						public void run() {
 							t1.setText(renShu.getCompany());
 							t2.setText(renShu.getConference_theme());
+							liucheng.setText(renShu.getConference_flow());
 							Glide.with(YiDongNianHuiActivity.this)
 									.load(baoCunBean.getHoutaiDiZhi()+"/upload/background/"+renShu.getBackground())
 
