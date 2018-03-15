@@ -24,7 +24,7 @@ import com.example.huiyiqiandaotv.R;
 public class XiuGaiWenZiDialog extends Dialog implements View.OnFocusChangeListener {
   //  private TextView title2;
     private Button l1,l2;
-    private EditText shanchu,daxiao;
+    private EditText shanchu,daxiao,shanchu1,daxiao1;
     public XiuGaiWenZiDialog(Context context) {
         super(context, R.style.dialog_style2);
         Window window =  this.getWindow();
@@ -44,6 +44,9 @@ public class XiuGaiWenZiDialog extends Dialog implements View.OnFocusChangeListe
 
         shanchu= (EditText) mView.findViewById(R.id.xiangce);
         daxiao= (EditText) mView.findViewById(R.id.daxiao);
+        shanchu1= (EditText) mView.findViewById(R.id.xiangce1);//1是左边
+        daxiao1= (EditText) mView.findViewById(R.id.daxiao1);
+
         l1= (Button)mView. findViewById(R.id.queren);
         l2= (Button) mView.findViewById(R.id.quxiao);
         l1.setOnFocusChangeListener(this);
@@ -51,12 +54,18 @@ public class XiuGaiWenZiDialog extends Dialog implements View.OnFocusChangeListe
         super.setContentView(mView);
     }
 
-    public void setContents(String ss, String s3){
+    public void setContents(String ss, String s3,String ss2,String ss4){
         if (ss!=null)
-        shanchu.setText(ss);
+            shanchu.setText(ss);
         if (s3!=null){
             daxiao.setText(s3);
         }
+        if (ss2!=null)
+            shanchu1.setText(ss2);
+        if (ss4!=null){
+            daxiao1.setText(ss4);
+        }
+
     }
 
     public String getContents(){
@@ -67,6 +76,17 @@ public class XiuGaiWenZiDialog extends Dialog implements View.OnFocusChangeListe
     public String getSize(){
 
         return daxiao.getText().toString().trim();
+
+    }
+
+    public String getContents2(){
+
+        return shanchu1.getText().toString().trim();
+
+    }
+    public String getSize2(){
+
+        return daxiao1.getText().toString().trim();
 
     }
 

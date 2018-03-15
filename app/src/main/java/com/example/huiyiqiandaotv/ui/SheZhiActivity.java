@@ -440,7 +440,8 @@ public class SheZhiActivity extends Activity implements View.OnClickListener, Vi
                     @Override public void onAnimationEnd(Animator animation) {
                         //弹窗
                         final XiuGaiWenZiDialog dialog=new XiuGaiWenZiDialog(SheZhiActivity.this);
-                        dialog.setContents(baoCunBean.getWenzi()+"",baoCunBean.getSize()==0? "30":String.valueOf(baoCunBean.getSize()));
+                        dialog.setContents(baoCunBean.getWenzi()+"",baoCunBean.getSize()==0? "30":String.valueOf(baoCunBean.getSize()),
+                                baoCunBean.getWenzi1()+"",baoCunBean.getSize1()==0? "60":String.valueOf(baoCunBean.getSize1()));
                         dialog.setOnQueRenListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

@@ -12,7 +12,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
@@ -28,12 +27,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.huiyiqiandaotv.MyApplication;
@@ -43,6 +41,7 @@ import com.example.huiyiqiandaotv.beans.BaoCunBeanDao;
 import com.example.huiyiqiandaotv.beans.BenDiRenShuBean;
 import com.example.huiyiqiandaotv.beans.BenDiRenShuBeanDao;
 import com.example.huiyiqiandaotv.beans.ChuanJianUserBean;
+import com.example.huiyiqiandaotv.beans.HuiYiInFoBean;
 import com.example.huiyiqiandaotv.beans.MoShengRenBean2;
 import com.example.huiyiqiandaotv.beans.MoShengRenBeanDao;
 import com.example.huiyiqiandaotv.beans.QianDaoId;
@@ -60,7 +59,6 @@ import com.example.huiyiqiandaotv.tts.control.InitConfig;
 import com.example.huiyiqiandaotv.tts.control.MySyntherizer;
 import com.example.huiyiqiandaotv.tts.control.NonBlockSyntherizer;
 import com.example.huiyiqiandaotv.tts.listener.UiMessageListener;
-import com.example.huiyiqiandaotv.tts.util.FileUtil;
 import com.example.huiyiqiandaotv.tts.util.OfflineResource;
 import com.example.huiyiqiandaotv.utils.DateUtils;
 import com.example.huiyiqiandaotv.utils.GsonUtil;
@@ -86,7 +84,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,6 +126,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 	private static Vector<TanChuangBean> lingdaoList=null;
 	private static Vector<TanChuangBean> yuangongList=null;
 	private int dw,dh;
+	private ImageView dabg;
 	private BaoCunBeanDao baoCunBeanDao=null;
 	private BaoCunBean baoCunBean=null;
 	private NetWorkStateReceiver netWorkStateReceiver=null;
@@ -136,7 +134,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 	private boolean isLianJie=false;
 	//private List<AllUserBean.DataBean> dataBeanList=new ArrayList<>();
 	//private RelativeLayout top_rl;
-	private TextView t1,t2,t3;
+	private TextView t1,t2,link_bgbg;
 	private TanChuangBeanDao tanChuangBeanDao=null;
 	private Typeface typeFace1;
 	private RelativeLayout tops_rl;
@@ -156,6 +154,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 	private BenDiRenShuBean benDiRenShuBean=null;
 	private BenDiRenShuBeanDao benDiRenShuBeanDao=null;
 	private QianDaoIdDao qianDaoIdDao=null;
+	private String huiYiName="", jubanGongSi="",huiyiZhuTi="";
 
 
 
@@ -194,9 +193,6 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 //
 //					break;
 				case 999:
-
-
-
 
 					if (yuangongList.size()>0){
 						adapter.notifyItemRemoved(0);
@@ -511,18 +507,28 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 		dh = Utils.getDisplaySize(YiDongNianHuiActivity.this).y;
 
 		setContentView(R.layout.yidongnianhuiactivity);
+		dabg= (ImageView) findViewById(R.id.dabg);
+		link_bgbg= (TextView) findViewById(R.id.bgbg);
 		tops_rl= (RelativeLayout) findViewById(R.id.top_rl);
 		wangluo = (TextView) findViewById(R.id.wangluo);
 		t1= (TextView) findViewById(R.id.t1);
 		t2= (TextView) findViewById(R.id.t2);
-		t3= (TextView) findViewById(R.id.t3);
 		typeFace1 = Typeface.createFromAsset(getAssets(), "fonts/xk.TTF");
 		t1.setTypeface(typeFace1);
-		t1.setText("中国移动通信集团");
+		if (baoCunBean.getWenzi1()!=null){
+			t1.setText(baoCunBean.getWenzi1());
+			if (baoCunBean.getSize1()!=0){
+				t1.setTextSize(baoCunBean.getSize1());
+			}
+		}
 		t2.setTypeface(typeFace1);
-		t2.setText("辽宁有限公司2018年");
-		t3.setTypeface(typeFace1);
-		t3.setText("市场经营工作会议");
+		if (baoCunBean.getWenzi()!=null){
+			t2.setText(baoCunBean.getWenzi());
+			if (baoCunBean.getSize()!=0){
+				t2.setTextSize(baoCunBean.getSize());
+			}
+		}
+
 		y1= (TextView) findViewById(R.id.y1);
 		y2= (TextView) findViewById(R.id.y2);
 		y3= (TextView) findViewById(R.id.y3);
@@ -539,12 +545,13 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 			cc.append(String.valueOf(c)).append(" ");
 		}
 		y1.setText(cc.toString());
-		ImageView ii= (ImageView) findViewById(R.id.yidong);
-		ii.setOnClickListener(new View.OnClickListener() {
+
+		link_bgbg.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (baoCunBean.getHoutaiDiZhi()!=null && !baoCunBean.getHoutaiDiZhi().equals("") && baoCunBean.getZhanghuId()!=null && !baoCunBean.getZhanghuId().equals("") && baoCunBean.getHuiyiId()!=null && !baoCunBean.getHuiyiId().equals("") ){
 					link_login();
+					link_bg();
 				}else {
 					TastyToast.makeText(YiDongNianHuiActivity.this,"请先设置账户和会议id",TastyToast.LENGTH_SHORT,TastyToast.INFO).show();
 				}
@@ -555,7 +562,6 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 		y2.setText(benDiRenShuBean.getYShen()+"");
 		y3.setText(benDiRenShuBean.getYShi()+"");
 		y4.setText(benDiRenShuBean.getYTeyao()+"");
-
 
 		String str2 = String.format("%04d", benDiRenShuBean.getN1());
 		char s2[]=str2.toCharArray();
@@ -721,6 +727,9 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 		zhanghuID=baoCunBean.getZhanghuId();
 		huiyiID=baoCunBean.getHuiyiId();
 
+		if (baoCunBean.getHoutaiDiZhi()!=null && !baoCunBean.getHoutaiDiZhi().equals("") && baoCunBean.getZhanghuId()!=null && !baoCunBean.getZhanghuId().equals("") && baoCunBean.getHuiyiId()!=null && !baoCunBean.getHuiyiId().equals("")){
+			link_bg();
+		}
 
 //		File logFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator +"qiandao.txt");
 //		// Make sure log file is exists
@@ -1342,13 +1351,13 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 	}
 
 	private void link_fasong(String discernPhoto,int timestamp,long id,String name,String weizhi) {
-
+		//Log.d(TAG, DateUtils.time(timestamp + "000"));
 		OkHttpClient okHttpClient= MyApplication.getOkHttpClient();
 		RequestBody body = new FormBody.Builder()
 				.add("accountId",baoCunBean.getZhanghuId())
                 .add("snapshotPhoto","")
                 .add("discernPhoto",discernPhoto)
-				.add("timestamp2",timestamp+"")
+				.add("timestamp2",DateUtils.time(timestamp+"000"))
 				.add("subjectId",id+"")
 				.add("subjectName",name)
 				.add("screenPosition",weizhi)
@@ -1358,7 +1367,7 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 				//.header("Content-Type", "application/json")
 				.post(body)
 				.url(baoCunBean.getHoutaiDiZhi()+"/appSave.do");
-		Log.d(TAG, baoCunBean.getHoutaiDiZhi() + "/appSave.do");
+		//Log.d(TAG, baoCunBean.getHoutaiDiZhi() + "/appSave.do");
 		// step 3：创建 Call 对象
 		Call call = okHttpClient.newCall(requestBuilder.build());
 
@@ -2399,6 +2408,75 @@ public class YiDongNianHuiActivity extends Activity implements RecytviewCash {
 				//	link_getAll_User();
 
 				//	}
+
+				}catch (Exception e){
+					Log.d("WebsocketPushMsg", e.getMessage()+"ttttt");
+				}
+
+			}
+		});
+	}
+
+	private void link_bg(){
+
+	//	final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+		OkHttpClient okHttpClient= MyApplication.getOkHttpClient();
+			//RequestBody requestBody = RequestBody.create(JSON, json);
+		RequestBody body = new FormBody.Builder()
+				.add("id",baoCunBean.getHuiyiId())
+				.build();
+
+		Request.Builder requestBuilder = new Request.Builder()
+//				.header("Content-Type", "application/json")
+//				.header("user-agent","Koala Admin")
+				//.post(requestBody)
+				//.get()
+				.post(body)
+				.url(baoCunBean.getHoutaiDiZhi()+"/getConference.do");
+
+		// step 3：创建 Call 对象
+		Call call = okHttpClient.newCall(requestBuilder.build());
+		//step 4: 开始异步请求
+		call.enqueue(new Callback() {
+			@Override
+			public void onFailure(Call call, IOException e) {
+				Log.d("AllConnects", "请求失败"+e.getMessage());
+			}
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				Log.d("AllConnects", "请求成功"+call.request().toString());
+				//获得返回体
+				try{
+
+					ResponseBody body = response.body();
+					String ss=body.string().trim();
+					Log.d("AllConnects", "aa   "+ss);
+
+					JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+					Gson gson=new Gson();
+					final HuiYiInFoBean renShu=gson.fromJson(jsonObject,HuiYiInFoBean.class);
+					huiYiName=renShu.getConference_name();
+					baoCunBean.setWenzi(renShu.getConference_theme());
+					baoCunBean.setWenzi1(renShu.getCompany());
+					baoCunBeanDao.update(baoCunBean);
+
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							t1.setText(renShu.getCompany());
+							t2.setText(renShu.getConference_theme());
+							Glide.with(YiDongNianHuiActivity.this)
+									.load(baoCunBean.getHoutaiDiZhi()+"/upload/background/"+renShu.getBackground())
+
+									//.load("http://121.46.3.20"+item.getTouxiang())
+									//.apply(myOptions)
+									//.transform(new GlideCircleTransform(MyApplication.getAppContext(),2,Color.parseColor("#ffffffff")))
+									//	.bitmapTransform(new GrayscaleTransformation(VlcVideoActivity.this))
+									.into(dabg);
+						}
+					});
+
 
 				}catch (Exception e){
 					Log.d("WebsocketPushMsg", e.getMessage()+"ttttt");

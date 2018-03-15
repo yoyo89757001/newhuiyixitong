@@ -30,12 +30,15 @@ public class BaoCunBean {
     private String touxiangzhuji;
     private String houtaiDiZhi;
     private String huiyiId;
-    @Generated(hash = 339347638)
+    private String wenzi1;
+    private int size1;
+    @Generated(hash = 1899331884)
     public BaoCunBean(@NotNull Long id, String shipingIP, String zhujiDiZhi,
             int moban, String tuisongDiZhi, String gonggao,
             boolean isShowMoshengren, boolean isShowShiPingLiu, boolean isHengOrShu,
             int yusu, int yudiao, int boyingren, String zhanghuId, String wenzi,
-            int size, String touxiangzhuji, String houtaiDiZhi, String huiyiId) {
+            int size, String touxiangzhuji, String houtaiDiZhi, String huiyiId,
+            String wenzi1, int size1) {
         this.id = id;
         this.shipingIP = shipingIP;
         this.zhujiDiZhi = zhujiDiZhi;
@@ -54,6 +57,8 @@ public class BaoCunBean {
         this.touxiangzhuji = touxiangzhuji;
         this.houtaiDiZhi = houtaiDiZhi;
         this.huiyiId = huiyiId;
+        this.wenzi1 = wenzi1;
+        this.size1 = size1;
     }
     @Generated(hash = 1469853663)
     public BaoCunBean() {
@@ -165,6 +170,18 @@ public class BaoCunBean {
     }
     public void setHuiyiId(String huiyiId) {
         this.huiyiId = huiyiId;
+    }
+    public String getWenzi1() {
+        return this.wenzi1;
+    }
+    public void setWenzi1(String wenzi1) {
+        this.wenzi1 = wenzi1;
+    }
+    public int getSize1() {
+        return this.size1;
+    }
+    public void setSize1(int size1) {
+        this.size1 = size1;
     }
 
 

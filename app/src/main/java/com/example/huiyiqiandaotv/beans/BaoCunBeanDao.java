@@ -40,6 +40,8 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
         public final static Property Touxiangzhuji = new Property(15, String.class, "touxiangzhuji", false, "TOUXIANGZHUJI");
         public final static Property HoutaiDiZhi = new Property(16, String.class, "houtaiDiZhi", false, "HOUTAI_DI_ZHI");
         public final static Property HuiyiId = new Property(17, String.class, "huiyiId", false, "HUIYI_ID");
+        public final static Property Wenzi1 = new Property(18, String.class, "wenzi1", false, "WENZI1");
+        public final static Property Size1 = new Property(19, int.class, "size1", false, "SIZE1");
     }
 
 
@@ -72,7 +74,9 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
                 "\"SIZE\" INTEGER NOT NULL ," + // 14: size
                 "\"TOUXIANGZHUJI\" TEXT," + // 15: touxiangzhuji
                 "\"HOUTAI_DI_ZHI\" TEXT," + // 16: houtaiDiZhi
-                "\"HUIYI_ID\" TEXT);"); // 17: huiyiId
+                "\"HUIYI_ID\" TEXT," + // 17: huiyiId
+                "\"WENZI1\" TEXT," + // 18: wenzi1
+                "\"SIZE1\" INTEGER NOT NULL );"); // 19: size1
     }
 
     /** Drops the underlying database table. */
@@ -138,6 +142,12 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
         if (huiyiId != null) {
             stmt.bindString(18, huiyiId);
         }
+ 
+        String wenzi1 = entity.getWenzi1();
+        if (wenzi1 != null) {
+            stmt.bindString(19, wenzi1);
+        }
+        stmt.bindLong(20, entity.getSize1());
     }
 
     @Override
@@ -197,6 +207,12 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
         if (huiyiId != null) {
             stmt.bindString(18, huiyiId);
         }
+ 
+        String wenzi1 = entity.getWenzi1();
+        if (wenzi1 != null) {
+            stmt.bindString(19, wenzi1);
+        }
+        stmt.bindLong(20, entity.getSize1());
     }
 
     @Override
@@ -224,7 +240,9 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
             cursor.getInt(offset + 14), // size
             cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // touxiangzhuji
             cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // houtaiDiZhi
-            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17) // huiyiId
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // huiyiId
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // wenzi1
+            cursor.getInt(offset + 19) // size1
         );
         return entity;
     }
@@ -249,6 +267,8 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
         entity.setTouxiangzhuji(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
         entity.setHoutaiDiZhi(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
         entity.setHuiyiId(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setWenzi1(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setSize1(cursor.getInt(offset + 19));
      }
     
     @Override
