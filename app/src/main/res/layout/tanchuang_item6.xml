@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ffflll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <RelativeLayout
+        android:layout_centerInParent="true"
+        android:id="@+id/ggghhh"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <LinearLayout
-           android:layout_centerInParent="true"
-            android:id="@+id/ggghhh"
+            android:layout_centerInParent="true"
             android:orientation="vertical"
             android:gravity="center"
             android:layout_width="match_parent"
@@ -37,6 +44,18 @@
         </LinearLayout>
 
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/dagou"
+            android:layout_alignParentRight="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:lottie_fileName="dagou.json"/>
+
+
+    </RelativeLayout>
+
+
+
     <ImageView
         android:id="@+id/touxiang"
         android:background="@drawable/yuanquan"
@@ -48,5 +67,8 @@
         android:layout_marginStart="20dp"
         android:layout_height="180dp"
         android:scaleType="fitXY" />
+
+
+
 
 </RelativeLayout>

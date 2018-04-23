@@ -11,6 +11,10 @@ android {
         ndk {
             abiFilters "armeabi", "armeabi-v7a"
         }
+        multiDexEnabled true
+    }
+    dexOptions {
+        jumboMode true
     }
     buildTypes {
         release {
@@ -21,6 +25,20 @@ android {
     greendao {
         schemaVersion 6
         targetGenDir 'src/main/java'
+    }
+}
+
+afterEvaluate {
+    tasks.matching {
+        it.name.startsWith('dex')
+    }.each { dx ->
+        if (dx.additionalParameters == null) {
+            dx.additionalParameters = []
+        }
+        dx.additionalParameters += '--multi-dex' // enable multidex
+
+        // optional
+        // dx.additionalParameters += "--main-dex-list=$projectDir/<filename>".toString() // enable the main-dex-list
     }
 }
 
@@ -57,4 +75,7 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx:1.9.8"
     compile "com.badlogicgames.gdx:gdx-backend-android:1.9.8"
     compile 'com.facebook.rebound:rebound:0.3.8'
+    compile 'com.android.support:multidex:1.0.3'
+    compile 'com.airbnb.android:lottie:2.0.0'
+
 }
