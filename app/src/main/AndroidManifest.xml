@@ -106,7 +106,7 @@
         </service>
         <!-- since 3.0.9 Required SDK 核心功能-->
         <provider
-            android:authorities="com.xiaojun.pufayinhang.DataProvider"
+            android:authorities="com.xiaojun.newhuiyixitong9.DataProvider"
             android:name="cn.jpush.android.service.DataProvider"
             android:exported="false"
             />

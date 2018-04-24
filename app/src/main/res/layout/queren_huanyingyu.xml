@@ -11,8 +11,6 @@
         android:orientation="vertical"
         android:layout_width="360dp"
         android:gravity="center_horizontal"
-        android:minWidth="330dp"
-        android:minHeight="300dp"
         android:layout_height="340dp">
 
 
@@ -64,7 +62,7 @@
             android:layout_below="@+id/juese"
             android:layout_width="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="26dp"
             android:hint="请输入欢迎语"
             android:id="@+id/huanyin_et"
             android:textSize="16sp"

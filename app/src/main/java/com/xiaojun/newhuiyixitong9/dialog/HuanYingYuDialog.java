@@ -3,9 +3,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +54,16 @@ public class HuanYingYuDialog extends Dialog {
         stringList2.add("合作伙伴");
         stringList2.add("陌生人");
 
+        Window window =  this.getWindow();
+        if ( window != null) {
+            WindowManager.LayoutParams attr = window.getAttributes();
+            if (attr != null) {
+                attr.height = LayoutParams.WRAP_CONTENT;
+                attr.width = LayoutParams.WRAP_CONTENT;
+                attr.gravity = Gravity.CENTER;//设置dialog 在布局中的位置
+            }
+        }
+
         setCustomDialog();
     }
 
@@ -61,8 +74,8 @@ public class HuanYingYuDialog extends Dialog {
         juese.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View contentView2 = LayoutInflater.from(context).inflate(R.layout.xiangmu_po_item, null);
 
+                View contentView2 = LayoutInflater.from(context).inflate(R.layout.xiangmu_po_item, null);
                 ListView listView2= (ListView) contentView2.findViewById(R.id.dddddd);
                 adapterss=new PopupWindowAdapter(context,stringList2);
                 listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -74,7 +87,7 @@ public class HuanYingYuDialog extends Dialog {
                     }
                 });
                 listView2.setAdapter(adapterss);
-                popupWindow=new PopupWindow(contentView2,200, 270);
+                popupWindow=new PopupWindow(contentView2,200, 180);
                 popupWindow.setFocusable(true);//获取焦点
                 popupWindow.setOutsideTouchable(true);//获取外部触摸事件
                 popupWindow.setTouchable(true);//能够响应触摸事件
