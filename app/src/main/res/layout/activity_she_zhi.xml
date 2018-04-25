@@ -62,7 +62,6 @@
                 android:textSize="16sp"
                 android:layout_marginTop="20dp"
                 android:text="设置陌生人是否显示"
-                android:visibility="gone"
                 android:textColor="@color/lanse33"
                 android:background="@drawable/zidonghuoqu2"
                 android:layout_width="150dp"
