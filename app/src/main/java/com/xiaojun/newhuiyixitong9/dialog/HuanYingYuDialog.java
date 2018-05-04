@@ -42,16 +42,16 @@ public class HuanYingYuDialog extends Dialog {
     private HuanYinYuBean huanYinYuBean=null;
     private Context context;
     private PopupWindowAdapter adapterss;
-    private String name="领导";
+    private String name="内部员工";
 
     public HuanYingYuDialog(Context context) {
         super(context, R.style.dialog_style2);
         this.context=context;
-        stringList2.add("领导");
-        stringList2.add("嘉宾");
-        stringList2.add("代表");
-        stringList2.add("工作人员");
-        stringList2.add("合作伙伴");
+        stringList2.add("内部员工");
+        stringList2.add("普通嘉宾");
+        stringList2.add("内部领导");
+        stringList2.add("外部领导");
+        //stringList2.add("合作伙伴");
         stringList2.add("陌生人");
 
         Window window =  this.getWindow();
@@ -105,7 +105,7 @@ public class HuanYingYuDialog extends Dialog {
                     //先用保存的name
                     switch (name){
 
-                        case "领导":
+                        case "内部员工":
                          HuanYinYuBean huanYinYuBean=huanYinYuBeanDao.load(1L);
                          if (huanYinYuBean==null){
                              //插入
@@ -123,7 +123,7 @@ public class HuanYingYuDialog extends Dialog {
 
 
                             break;
-                        case "嘉宾":
+                        case "普通嘉宾":
                             HuanYinYuBean huanYinYuBean2=huanYinYuBeanDao.load(2L);
                             if (huanYinYuBean2==null){
                                 //插入
@@ -139,7 +139,7 @@ public class HuanYingYuDialog extends Dialog {
                                 huanYinYuBeanDao.update(huanYinYuBean2);
                             }
                             break;
-                        case "代表":
+                        case "内部领导":
 
                             HuanYinYuBean huanYinYuBean3=huanYinYuBeanDao.load(3L);
                             if (huanYinYuBean3==null){
@@ -157,7 +157,7 @@ public class HuanYingYuDialog extends Dialog {
                             }
 
                             break;
-                        case "工作人员":
+                        case "外部领导":
                             HuanYinYuBean huanYinYuBean4=huanYinYuBeanDao.load(4L);
                             if (huanYinYuBean4==null){
                                 //插入
@@ -173,22 +173,22 @@ public class HuanYingYuDialog extends Dialog {
                                 huanYinYuBeanDao.update(huanYinYuBean4);
                             }
                             break;
-                        case "合作伙伴":
-                            HuanYinYuBean huanYinYuBean5=huanYinYuBeanDao.load(5L);
-                            if (huanYinYuBean5==null){
-                                //插入
-                                HuanYinYuBean h=new HuanYinYuBean();
-                                h.setId(5L);
-                                h.setName(name);
-                                h.setHuanyinci(huanyinci.getText().toString().trim());
-                                huanYinYuBeanDao.insert(h);
-
-                            }else {
-                                //更新
-                                huanYinYuBean5.setHuanyinci(huanyinci.getText().toString().trim());
-                                huanYinYuBeanDao.update(huanYinYuBean5);
-                            }
-                            break;
+//                        case "合作伙伴":
+//                            HuanYinYuBean huanYinYuBean5=huanYinYuBeanDao.load(5L);
+//                            if (huanYinYuBean5==null){
+//                                //插入
+//                                HuanYinYuBean h=new HuanYinYuBean();
+//                                h.setId(5L);
+//                                h.setName(name);
+//                                h.setHuanyinci(huanyinci.getText().toString().trim());
+//                                huanYinYuBeanDao.insert(h);
+//
+//                            }else {
+//                                //更新
+//                                huanYinYuBean5.setHuanyinci(huanyinci.getText().toString().trim());
+//                                huanYinYuBeanDao.update(huanYinYuBean5);
+//                            }
+//                            break;
                         case "陌生人":
                             HuanYinYuBean huanYinYuBean6=huanYinYuBeanDao.load(6L);
                             if (huanYinYuBean6==null){
@@ -210,41 +210,41 @@ public class HuanYingYuDialog extends Dialog {
                     huanyinci.setText("");
                     //显示保存起来的欢迎语
                     switch (juese.getText().toString()){
-                        case "领导":
+                        case "内部员工":
                             if (huanYinYuBeanDao.load(1L)==null || huanYinYuBeanDao.load(1L).getHuanyinci().equals("")){
-                                huanyinci.setHint("请设置领导欢迎语");
+                                huanyinci.setHint("请设置内部员工欢迎语");
                             }else {
                                 huanyinci.setText(huanYinYuBeanDao.load(1L).getHuanyinci());
                             }
                             break;
-                        case "嘉宾":
+                        case "普通嘉宾":
                             if (huanYinYuBeanDao.load(2L)==null ||huanYinYuBeanDao.load(2L).getHuanyinci().equals("")){
-                                huanyinci.setHint("请设置嘉宾欢迎语");
+                                huanyinci.setHint("请设置普通嘉宾欢迎语");
                             }else {
                                 huanyinci.setText(huanYinYuBeanDao.load(2L).getHuanyinci());
                             }
                             break;
-                        case "代表":
+                        case "内部领导":
                             if (huanYinYuBeanDao.load(3L)==null || huanYinYuBeanDao.load(3L).getHuanyinci().equals("")){
-                                huanyinci.setHint("请设置代表欢迎语");
+                                huanyinci.setHint("请设置内部领导欢迎语");
                             }else {
                                 huanyinci.setText(huanYinYuBeanDao.load(3L).getHuanyinci());
                             }
                             break;
-                        case "工作人员":
+                        case "外部领导":
                             if (huanYinYuBeanDao.load(4L)==null || huanYinYuBeanDao.load(4L).getHuanyinci().equals("")){
-                                huanyinci.setHint("请设置工作人员欢迎语");
+                                huanyinci.setHint("请设置外部领导欢迎语");
                             }else {
                                 huanyinci.setText(huanYinYuBeanDao.load(4L).getHuanyinci());
                             }
                             break;
-                        case "合作伙伴":
-                            if (huanYinYuBeanDao.load(5L)==null || huanYinYuBeanDao.load(5L).getHuanyinci().equals("")){
-                                huanyinci.setHint("请设置合作伙伴欢迎语");
-                            }else {
-                                huanyinci.setText(huanYinYuBeanDao.load(5L).getHuanyinci());
-                            }
-                            break;
+//                        case "合作伙伴":
+//                            if (huanYinYuBeanDao.load(5L)==null || huanYinYuBeanDao.load(5L).getHuanyinci().equals("")){
+//                                huanyinci.setHint("请设置合作伙伴欢迎语");
+//                            }else {
+//                                huanyinci.setText(huanYinYuBeanDao.load(5L).getHuanyinci());
+//                            }
+//                            break;
                         case "陌生人":
                             if (huanYinYuBeanDao.load(6L)==null || huanYinYuBeanDao.load(6L).getHuanyinci().equals("")){
                                 huanyinci.setHint("请设置陌生人欢迎语");
@@ -268,7 +268,7 @@ public class HuanYingYuDialog extends Dialog {
         if (huanYinYuBeanDao.load(1L)!=null && !huanYinYuBeanDao.load(1L).getHuanyinci().equals(""))
         huanyinci.setText(huanYinYuBeanDao.load(1L).getHuanyinci());
         else
-            huanyinci.setHint("请设置领导欢迎语");
+            huanyinci.setHint("请设置内部员工欢迎语");
 
         super.setContentView(mView);
 
@@ -279,7 +279,7 @@ public class HuanYingYuDialog extends Dialog {
         name=juese.getText().toString();
         switch (name){
 
-            case "领导":
+            case "内部员工":
                 HuanYinYuBean huanYinYuBean=huanYinYuBeanDao.load(1L);
                 if (huanYinYuBean==null){
                     //插入
@@ -297,7 +297,7 @@ public class HuanYingYuDialog extends Dialog {
 
 
                 break;
-            case "嘉宾":
+            case "普通嘉宾":
                 HuanYinYuBean huanYinYuBean2=huanYinYuBeanDao.load(2L);
                 if (huanYinYuBean2==null){
                     //插入
@@ -313,7 +313,7 @@ public class HuanYingYuDialog extends Dialog {
                     huanYinYuBeanDao.update(huanYinYuBean2);
                 }
                 break;
-            case "代表":
+            case "内部领导":
 
                 HuanYinYuBean huanYinYuBean3=huanYinYuBeanDao.load(3L);
                 if (huanYinYuBean3==null){
@@ -331,7 +331,7 @@ public class HuanYingYuDialog extends Dialog {
                 }
 
                 break;
-            case "工作人员":
+            case "外部领导":
                 HuanYinYuBean huanYinYuBean4=huanYinYuBeanDao.load(4L);
                 if (huanYinYuBean4==null){
                     //插入
@@ -347,22 +347,22 @@ public class HuanYingYuDialog extends Dialog {
                     huanYinYuBeanDao.update(huanYinYuBean4);
                 }
                 break;
-            case "合作伙伴":
-                HuanYinYuBean huanYinYuBean5=huanYinYuBeanDao.load(5L);
-                if (huanYinYuBean5==null){
-                    //插入
-                    HuanYinYuBean h=new HuanYinYuBean();
-                    h.setId(5L);
-                    h.setName(name);
-                    h.setHuanyinci(huanyinci.getText().toString().trim());
-                    huanYinYuBeanDao.insert(h);
-
-                }else {
-                    //更新
-                    huanYinYuBean5.setHuanyinci(huanyinci.getText().toString().trim());
-                    huanYinYuBeanDao.update(huanYinYuBean5);
-                }
-                break;
+//            case "合作伙伴":
+//                HuanYinYuBean huanYinYuBean5=huanYinYuBeanDao.load(5L);
+//                if (huanYinYuBean5==null){
+//                    //插入
+//                    HuanYinYuBean h=new HuanYinYuBean();
+//                    h.setId(5L);
+//                    h.setName(name);
+//                    h.setHuanyinci(huanyinci.getText().toString().trim());
+//                    huanYinYuBeanDao.insert(h);
+//
+//                }else {
+//                    //更新
+//                    huanYinYuBean5.setHuanyinci(huanyinci.getText().toString().trim());
+//                    huanYinYuBeanDao.update(huanYinYuBean5);
+//                }
+//                break;
             case "陌生人":
                 HuanYinYuBean huanYinYuBean6=huanYinYuBeanDao.load(6L);
                 if (huanYinYuBean6==null){
