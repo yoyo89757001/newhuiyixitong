@@ -29,7 +29,7 @@
     <TextView
         android:textColor="@color/textcolor"
         android:layout_marginTop="8dp"
-        android:text="(注意:用符号 #@ 代表姓名,你可以把姓名,也就是 #@ 这两个符号添加到欢迎语的任意位置)"
+        android:text="(注意:用符号 #@ 代表姓名,用符号 %* 代表职位,你可以把姓名,也就是 #@ 这两个符号添加到欢迎语的任意位置,职位也是一样)"
         android:textSize="14sp"
         android:padding="4dp"
         android:gravity="center"
